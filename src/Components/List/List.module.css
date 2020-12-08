@@ -1,0 +1,44 @@
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  margin: 4rem 0;
+}
+
+.search input {
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+
+.btn {
+  padding: 0 2rem;
+  text-transform: uppercase;
+}
+
+.container {
+  padding: 2rem;
+}
+
+.keyword {
+  padding: 0 2.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  align-items: center;
+  justify-items: center;
+}
+
+.image {
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+/* @media screen  */
