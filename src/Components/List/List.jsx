@@ -12,11 +12,11 @@ export default function List() {
     pictureData();
   }, []);
 
-  const encodedQuery = encodeURIComponent(inputValue);
   const pictureData = () => {
+    const encodeQuery = encodeURIComponent(inputValue);
     setIsLoading(true);
     fetchJsonp(
-      `https://api.flickr.com/services/feeds/photos_public.gne?lang=en-us&format=json&tags=${encodedQuery}`,
+      `https://api.flickr.com/services/feeds/photos_public.gne?lang=en-us&format=json&tags=""`,
       { jsonpCallback: "jsoncallback" }
     )
       .then((response) => response.json())
@@ -33,21 +33,27 @@ export default function List() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let keyword = e.target.value;
+    const encodeQuery = encodeURIComponent(inputValue);
+    setIsLoading(true);
     fetchJsonp(
-      `https://api.flickr.com/services/feeds/photos_public.gne?lang=en-us&format=json&tags=${keyword}`,
+      `https://api.flickr.com/services/feeds/photos_public.gne?lang=en-us&format=json&tags=${encodeQuery}`,
       { jsonpCallback: "jsoncallback" }
     )
       .then((response) => response.json())
       .then((result) => {
         setList(result.items);
         console.log(list);
+        setIsLoading(false);
       })
-      .catch(() => console.log("error"));
+      .catch(() => {
+        console.log("error");
+        setIsLoading(false);
+      });
   };
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
+    // console.log(e.target.value);
   };
 
   return (
