@@ -1,0 +1,20 @@
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  margin: 4rem 0;
+}
+
+.search input {
+  font-size: 1.4rem;
+  padding: 1rem;
+  outline: none;
+}
+
+.btn {
+  padding: 0 2rem;
+  text-transform: uppercase;
+}

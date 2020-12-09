@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import fetchJsonp from "fetch-jsonp";
 import styles from "./List.module.css";
 import loading from "../Assets/loading.gif";
+import SearchBar from "../SearchBar/SearchBar";
 
 export default function List() {
   const [list, setList] = useState([]);
@@ -53,6 +54,7 @@ export default function List() {
       .then((result) => {
         setList(result.items);
         // console.log(list);
+        setCurrentPage(1);
         setIsLoading(false);
       })
       .catch(() => {
@@ -87,22 +89,7 @@ export default function List() {
   return (
     <>
       <div>
-        <div className={styles.row}>
-          <form
-            action="search"
-            onSubmit={handleSubmit}
-            className={styles.search}
-          >
-            <input
-              type="text"
-              name="search"
-              id="search"
-              onChange={handleChange}
-              placeholder="Write your keywords here.."
-            />
-            <input type="submit" value="search" className={styles.btn} />
-          </form>
-        </div>
+        <SearchBar handleSubmit={handleSubmit} handleChange={handleChange} />
         <div className={styles.container}>
           <div className={styles.keyword}>Search for: {inputValue}</div>
           <ul className={styles.list}>
