@@ -5,15 +5,25 @@ import loading from "../Assets/loading.gif";
 
 export default function List() {
   const [list, setList] = useState([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("random");
   const [isLoading, setIsLoading] = useState(false);
+  const [PostPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState([]);
+
+  const lastPostIndex = currentPage * PostPerPage;
+  const firstPostIndex = lastPostIndex - PostPerPage;
+  const currentPost = list.slice(firstPostIndex, lastPostIndex);
 
   useEffect(() => {
     pictureData();
   }, []);
 
+  useEffect(() => {
+    changePage();
+  }, [list]);
+
   const pictureData = () => {
-    const encodeQuery = encodeURIComponent(inputValue);
     setIsLoading(true);
     fetchJsonp(
       `https://api.flickr.com/services/feeds/photos_public.gne?lang=en-us&format=json&tags=""`,
@@ -22,11 +32,11 @@ export default function List() {
       .then((response) => response.json())
       .then((result) => {
         setList(result.items);
-        console.log(list);
         setIsLoading(false);
       })
       .catch(() => {
-        console.log("error");
+        alert("Please reload the page!");
+        // console.log("error");
         setIsLoading(false);
       });
   };
@@ -42,18 +52,36 @@ export default function List() {
       .then((response) => response.json())
       .then((result) => {
         setList(result.items);
-        console.log(list);
+        // console.log(list);
         setIsLoading(false);
       })
       .catch(() => {
-        console.log("error");
+        alert("Please use another keyword!");
+        // console.log("error");
         setIsLoading(false);
       });
   };
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
+    if (e.target.value === "") {
+      setInputValue("random");
+    }
     // console.log(e.target.value);
+  };
+
+  const numberList = [];
+  const changePage = () => {
+    for (let i = 1; i <= Math.ceil(list.length / PostPerPage); i++) {
+      numberList.push(`${i}`);
+      // console.log(numberList);
+      setPageNumbers(numberList);
+    }
+    // console.log(pageNumbers);
+  };
+
+  const paginate = (number) => {
+    setCurrentPage(number);
   };
 
   return (
@@ -78,8 +106,8 @@ export default function List() {
         <div className={styles.container}>
           <div className={styles.keyword}>Search for: {inputValue}</div>
           <ul className={styles.list}>
-            {list.length >= 0
-              ? list.map((items, i) => {
+            {currentPost.length >= 0
+              ? currentPost.map((items, i) => {
                   if (isLoading) {
                     return (
                       <li key={i}>
@@ -104,6 +132,23 @@ export default function List() {
                 })
               : "No Pictures Available"}
           </ul>
+          <div className={styles.page}>
+            {pageNumbers.length > 0
+              ? pageNumbers.map((number) => {
+                  return (
+                    <ul>
+                      <li
+                        key={number}
+                        className={styles.pagebtn}
+                        onClick={() => paginate(number)}
+                      >
+                        {number}
+                      </li>
+                    </ul>
+                  );
+                })
+              : ""}
+          </div>
         </div>
       </div>
     </>

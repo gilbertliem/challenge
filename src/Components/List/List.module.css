@@ -11,6 +11,7 @@
 .search input {
   font-size: 1.4rem;
   padding: 1rem;
+  outline: none;
 }
 
 .btn {
@@ -23,7 +24,7 @@
 }
 
 .keyword {
-  padding: 0 2.5rem;
+  padding: 2.5rem;
   font-size: 1.6rem;
   font-weight: 700;
 }
@@ -41,4 +42,29 @@
   cursor: pointer;
 }
 
-/* @media screen  */
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page li {
+  list-style: none;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.pagebtn {
+  border: 1px solid black;
+  border-radius: 50%;
+  margin: 2rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+.pagebtn:hover {
+  background-color: rgb(59, 59, 59);
+  color: #ffffff;
+}
