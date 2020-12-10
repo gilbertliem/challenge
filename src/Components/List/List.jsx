@@ -6,7 +6,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import Modal from "react-modal";
 
 export default function List() {
-  const [list, setList] = useState([]);
+  const [listPicture, setListPicture] = useState([]);
   const [inputValue, setInputValue] = useState("random");
   const [isLoading, setIsLoading] = useState(false);
   const [PostPerPage] = useState(10);
@@ -17,7 +17,7 @@ export default function List() {
 
   const lastPostIndex = currentPage * PostPerPage;
   const firstPostIndex = lastPostIndex - PostPerPage;
-  const currentPost = list.slice(firstPostIndex, lastPostIndex);
+  const currentPost = listPicture.slice(firstPostIndex, lastPostIndex);
 
   // MODAL STYLE //
   const customStyles = {
@@ -41,10 +41,9 @@ export default function List() {
 
   useEffect(() => {
     changePage();
-  }, [list]);
+  }, [listPicture]);
 
   // FUNCTIONS //
-
   const pictureData = () => {
     setIsLoading(true);
     fetchJsonp(
@@ -53,7 +52,7 @@ export default function List() {
     )
       .then((response) => response.json())
       .then((result) => {
-        setList(result.items);
+        setListPicture(result.items);
         setIsLoading(false);
       })
       .catch(() => {
@@ -73,7 +72,7 @@ export default function List() {
     )
       .then((response) => response.json())
       .then((result) => {
-        setList(result.items);
+        setListPicture(result.items);
         // console.log(list);
         setCurrentPage(1);
         setIsLoading(false);
@@ -96,7 +95,7 @@ export default function List() {
   // PAGINATION //
   const numberList = [];
   const changePage = () => {
-    for (let i = 1; i <= Math.ceil(list.length / PostPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(listPicture.length / PostPerPage); i++) {
       numberList.push(`${i}`);
       // console.log(numberList);
       setPageNumbers(numberList);
@@ -180,7 +179,7 @@ export default function List() {
                   return (
                     <ul>
                       <li
-                        key={number}
+                        // key={number}
                         className={styles.pagebtn}
                         onClick={() => paginate(number)}
                       >
