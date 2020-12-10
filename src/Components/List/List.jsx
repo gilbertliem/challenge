@@ -3,6 +3,7 @@ import fetchJsonp from "fetch-jsonp";
 import styles from "./List.module.css";
 import loading from "../Assets/loading.gif";
 import SearchBar from "../SearchBar/SearchBar";
+import Modal from "react-modal";
 
 export default function List() {
   const [list, setList] = useState([]);
@@ -11,10 +12,28 @@ export default function List() {
   const [PostPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageNumbers, setPageNumbers] = useState([]);
+  const [display, setDisplay] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const lastPostIndex = currentPage * PostPerPage;
   const firstPostIndex = lastPostIndex - PostPerPage;
   const currentPost = list.slice(firstPostIndex, lastPostIndex);
+
+  // MODAL STYLE //
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  Modal.setAppElement("#root");
+
+  // USEEFFECT //
 
   useEffect(() => {
     pictureData();
@@ -23,6 +42,8 @@ export default function List() {
   useEffect(() => {
     changePage();
   }, [list]);
+
+  // FUNCTIONS //
 
   const pictureData = () => {
     setIsLoading(true);
@@ -72,6 +93,7 @@ export default function List() {
     // console.log(e.target.value);
   };
 
+  // PAGINATION //
   const numberList = [];
   const changePage = () => {
     for (let i = 1; i <= Math.ceil(list.length / PostPerPage); i++) {
@@ -85,6 +107,17 @@ export default function List() {
   const paginate = (number) => {
     setCurrentPage(number);
   };
+
+  // MODAL //
+  const openModal = (e) => {
+    let id = e.target.id;
+    let detail = currentPost.filter((item) => item.author_id === id);
+    setDisplay(detail);
+    // console.log(id);
+    setModalOpen(true);
+  };
+
+  const requestClose = () => setModalOpen(false);
 
   return (
     <>
@@ -109,15 +142,37 @@ export default function List() {
                     return (
                       <li key={i}>
                         <img
+                          id={items.author_id}
                           src={`${items.media.m}`}
                           alt={items.title}
                           className={styles.image}
+                          onClick={openModal}
                         />
                       </li>
                     );
                   }
                 })
               : "No Pictures Available"}
+            <Modal
+              isOpen={modalOpen}
+              shouldCloseOnOverlayClick={true}
+              onRequestClose={requestClose}
+              style={customStyles}
+            >
+              {display.length > 0
+                ? display.map((item, i) => {
+                    return (
+                      <li key={i} className={styles.modal}>
+                        <img
+                          src={`${item.media.m}`}
+                          alt={item.title}
+                          id={item.author_id}
+                        />
+                      </li>
+                    );
+                  })
+                : ""}
+            </Modal>
           </ul>
           <div className={styles.page}>
             {pageNumbers.length > 0

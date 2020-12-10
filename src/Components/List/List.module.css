@@ -47,3 +47,11 @@
   background-color: rgb(59, 59, 59);
   color: #ffffff;
 }
+
+.modal {
+  list-style: none;
+}
+
+.modal img {
+  max-width: 100%;
+}
